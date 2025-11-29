@@ -1,0 +1,56 @@
+{
+  "manifest_version": 3,
+  "name": "SafeDM",
+  "version": "0.1.0",
+  "description": "SafeDM detects potentially unsafe or creepy DMs on Reddit, X, Instagram, and LinkedIn — fully on-device, privacy-first.",
+  "permissions": [
+    "storage",
+    "scripting",
+    "contextMenus"
+  ],
+  "host_permissions": [
+    "*://*.reddit.com/*",
+    "*://*.twitter.com/*",
+    "*://*.x.com/*",
+    "*://*.instagram.com/*",
+    "*://*.linkedin.com/*"
+  ],
+  "background": {
+    "service_worker": "src/background.js"
+  },
+  "action": {
+    "default_popup": "src/popup/popup.html"
+  },
+  "content_scripts": [
+    {
+      "matches": ["*://*.reddit.com/*"],
+      "js": ["src/content/injector.js","src/content/reddit.js"],
+      "run_at": "document_end"
+    },
+    {
+      "matches": ["*://*.twitter.com/*","*://*.x.com/*"],
+      "js": ["src/content/injector.js","src/content/x.js"],
+      "run_at": "document_end"
+    },
+    {
+      "matches": ["*://*.instagram.com/*"],
+      "js": ["src/content/injector.js","src/content/instagram.js"],
+      "run_at": "document_end"
+    },
+    {
+      "matches": ["*://*.linkedin.com/*"],
+      "js": ["src/content/injector.js","src/content/linkedin.js"],
+      "run_at": "document_end"
+    }
+  ],
+  "web_accessible_resources": [
+    {
+      "resources": [
+        "src/ui/styles.css",
+        "src/ui/panel.js",
+        "src/detector.js"
+      ],
+      "matches": ["<all_urls>"]
+    }
+  ]
+}
